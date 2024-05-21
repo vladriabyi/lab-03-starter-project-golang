@@ -1,3 +1,4 @@
+# Етап 1: Збірка додатку
 FROM golang:1.16 AS builder
 
 WORKDIR /app
@@ -10,12 +11,9 @@ COPY . .
 
 RUN CGO_ENABLED=0 go build -o myapp .
 
-FROM alpine:latest
+# Етап 2: Створення мінімального образу
+FROM scratch
 
-WORKDIR /root/
+COPY --from=builder /app/myapp /
 
-COPY --from=builder /app/myapp .
-
-EXPOSE 8080
-
-CMD ["./myapp", "serve"]
+ENTRYPOINT ["/myapp"]
