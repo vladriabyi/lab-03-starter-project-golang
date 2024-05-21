@@ -12,7 +12,7 @@ COPY . .
 RUN CGO_ENABLED=0 go build -o myapp .
 
 # Етап 2: Створення мінімального образу
-FROM scratch
+FROM gcr.io/distroless/static
 
 COPY --from=builder /app/myapp /
 
